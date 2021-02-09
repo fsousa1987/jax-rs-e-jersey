@@ -1,5 +1,7 @@
 package com.francisco.loja.modelo;
 
+import com.thoughtworks.xstream.XStream;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,6 @@ public class Carrinho {
     private String cidade;
     private long id;
 
-    @SuppressWarnings("UnusedReturnValue")
     public Carrinho adiciona(Produto produto) {
         produtos.add(produto);
         return this;
@@ -68,5 +69,9 @@ public class Carrinho {
                 return;
             }
         }
+    }
+
+    public String toXML() {
+        return new XStream().toXML(this);
     }
 }

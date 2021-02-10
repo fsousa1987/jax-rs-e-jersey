@@ -1,6 +1,7 @@
 package com.francisco.loja;
 
 import com.francisco.loja.modelo.Carrinho;
+import com.francisco.loja.modelo.Projeto;
 import com.thoughtworks.xstream.XStream;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -42,7 +43,9 @@ public class ClienteTest {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8080");
         String conteudo = target.path("/projetos").request().get(String.class);
-        assertTrue(conteudo.contains("<nome>Minha loja"));
+        System.out.println(conteudo);
+        Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
+        assertEquals("Minha loja", projeto.getNome());
     }
 
     @Test

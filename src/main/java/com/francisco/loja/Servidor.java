@@ -10,12 +10,16 @@ import java.net.URI;
 public class Servidor {
 
     public static void main(String[] args) throws IOException {
-        ResourceConfig config = new ResourceConfig().packages("com.francisco.loja");
-        URI uri = URI.create("http://localhost:8080/");
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
+        HttpServer server = inicializaServidor();
         System.out.println("Servidor rodando");
         //noinspection ResultOfMethodCallIgnored
         System.in.read();
         server.shutdownNow();
+    }
+
+    static HttpServer inicializaServidor() {
+        ResourceConfig config = new ResourceConfig().packages("com.francisco.loja");
+        URI uri = URI.create("http://localhost:8080/");
+        return GrizzlyHttpServerFactory.createHttpServer(uri, config);
     }
 }

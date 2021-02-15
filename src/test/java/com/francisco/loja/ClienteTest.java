@@ -21,10 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ClienteTest {
 
     private HttpServer server;
+    private WebTarget target;
+    private Client client;
 
     @BeforeEach
     public void startaServidor() {
         server = Servidor.inicializaServidor();
+        this.client = ClientBuilder.newClient();
+        this.target = client.target("http://localhost:8080");
     }
 
     @AfterEach
@@ -62,19 +66,35 @@ public class ClienteTest {
     }
 
     @Test
-    public void testaQueSuportaNovosCarrinhos(){
+    public void testaQueSuportaNovosCarrinhos() {
 
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080");
         Carrinho carrinho = new Carrinho();
-        carrinho.adiciona(new Produto(314L, "Tablet", 999, 1));
-        carrinho.setRua("Rua Vergueiro");
-        carrinho.setCidade("Sao Paulo");
+        carrinho.adiciona(new Produto(314, "Microfone", 37, 1));
+        carrinho.setRua("Rua Vergueiro 3185");
+        carrinho.setCidade("São Paulo");
         String xml = carrinho.toXML();
-
         Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 
         Response response = target.path("/carrinhos").request().post(entity);
-        assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+        assertEquals(201, response.getStatus());
+        String location = response.getHeaderString("Location");
+        String conteudo = client.target(location).request().get(String.class);
+        assertTrue(conteudo.contains("Microfone"));
+    }
+
+    @Test
+    public void testaQueSuportaNovosProjetos() {
+
+        Projeto projeto = new Projeto();
+        projeto.setNome("Correr");
+        projeto.setAnoDeInicio(2021);
+        String xml = projeto.toXML();
+        Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+
+        Response response = target.path("/projetos").request().post(entity);
+        assertEquals(201, response.getStatus());
+        String location = response.getHeaderString("Location");
+        String conteudo = client.target(location).request().get(String.class);
+        assertTrue(conteudo.contains("Correr"));
     }
 }

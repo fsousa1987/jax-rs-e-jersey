@@ -5,6 +5,9 @@ import com.francisco.loja.modelo.Projeto;
 import com.thoughtworks.xstream.XStream;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+import java.net.URI;
 
 @Path("projetos")
 public class ProjetoResource {
@@ -18,10 +21,11 @@ public class ProjetoResource {
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_XML)
-    public String adiciona(String conteudo) {
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response adiciona(String conteudo) {
         Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
         new ProjetoDAO().adiciona(projeto);
-        return "<status>sucesso</status>";
+        URI uri = URI.create("/projetos/" + projeto.getId());
+        return Response.created(uri).build();
     }
 }

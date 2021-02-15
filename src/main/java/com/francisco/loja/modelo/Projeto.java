@@ -26,6 +26,14 @@ public class Projeto {
         return id;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setAnoDeInicio(int anoDeInicio) {
+        this.anoDeInicio = anoDeInicio;
+    }
+
     public String getNome() {
         return nome;
     }

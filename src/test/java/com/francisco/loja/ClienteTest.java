@@ -11,9 +11,14 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,7 +32,9 @@ public class ClienteTest {
     @BeforeEach
     public void startaServidor() {
         server = Servidor.inicializaServidor();
-        this.client = ClientBuilder.newClient();
+        ClientConfig config = new ClientConfig();
+        config.register(new LoggingFeature(Logger.getLogger(getClass().getName()), Level.OFF, LoggingFeature.Verbosity.PAYLOAD_ANY, 8192));
+        this.client = ClientBuilder.newClient(config);
         this.target = client.target("http://localhost:8080");
     }
 

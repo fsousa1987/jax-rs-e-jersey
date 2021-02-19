@@ -2,6 +2,7 @@ package com.francisco.loja.resource;
 
 import com.francisco.loja.dao.CarrinhoDAO;
 import com.francisco.loja.modelo.Carrinho;
+import com.francisco.loja.modelo.Produto;
 import com.thoughtworks.xstream.XStream;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -34,6 +35,15 @@ public class CarrinhoResource {
     public Response removeProduto(@PathParam("id") long id, @PathParam("produtoId") long produtoId) {
         Carrinho carrinho = new CarrinhoDAO().busca(id);
         carrinho.remove(produtoId);
+        return Response.ok().build();
+    }
+
+    @Path("{id}/produtos/{produtoId}/quantidade")
+    @PUT
+    public Response alteraProduto(String conteudo, @PathParam("id") long id) {
+        Carrinho carrinho = new CarrinhoDAO().busca(id);
+        Produto produto = (Produto) new XStream().fromXML(conteudo);
+        carrinho.trocaQuantidade(produto);
         return Response.ok().build();
     }
 }

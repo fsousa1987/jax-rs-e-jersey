@@ -1,12 +1,22 @@
 package com.francisco.loja.modelo;
 
-@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@SuppressWarnings({"CanBeFinal"})
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Produto {
 
     private double preco;
     private long id;
     private String nome;
     private int quantidade;
+
+    public Produto() {
+    }
 
     public Produto(long id, String nome, double preco, int quantidade) {
         this.id = id;

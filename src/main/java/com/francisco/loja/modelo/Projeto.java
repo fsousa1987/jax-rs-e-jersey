@@ -2,7 +2,12 @@ package com.francisco.loja.modelo;
 
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Projeto {
 
     private long id;
